@@ -50,8 +50,11 @@ async def webhook(request):
 async def repo_installation_added(event, gh, *args, **kwargs):
     installation_id = event.data["installation"]["id"]
     installation_access_token = await apps.get_installation_access_token(
-    gh,
-    installation_id=installation_id)
+        gh,
+        installation_id=installation_id,
+        app_id=os.environ.get("GH_APP_ID"),
+        private_key=os.environ.get("GH_PRIVATE_KEY")
+    )
     sender_name = event.data["sender"]["login"]
 
     for repo in event.data["repositories"]:
